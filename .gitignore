@@ -1,0 +1,12 @@
+*.toc
+*.fls
+*_latexmk
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+
+*.sty
+
+.vimrc

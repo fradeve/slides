@@ -1,0 +1,34 @@
+digraph G {
+	graph [ dpi = 300 ];
+	// table size
+	size ="4,6";
+	graph [fontsize=64];
+	edge  [fontsize=64];
+	node  [fontsize=64];
+	ranksep = 5.5;
+	nodesep = .25;
+	edge [style="setlinewidth(3)"];
+	layout=circo
+
+	//// LABELING ////
+
+	// non-os software
+	linux [label="GNU/Linux"]
+	grass [label="GRASS GIS"]
+	qgis [label="Quantum GIS"]
+	textpattern [label="Textpattern"]
+	meshlab [label="MeshLab"]
+	latex [label="LaTeX"]
+
+	// destinations
+	archeologo [label="archeologo"]
+
+	//// CONNECTIONS ////
+
+	linux -> archeologo [arrowhead=crow];
+	grass -> archeologo [arrowhead=crow];
+	qgis -> archeologo [arrowhead=crow];
+	textpattern -> archeologo [arrowhead=crow];
+	meshlab -> archeologo [arrowhead=crow];
+	latex -> archeologo [arrowhead=crow];
+}
