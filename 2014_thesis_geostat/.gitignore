@@ -1,0 +1,58 @@
+## VIM
+
+.vimrc
+
+## pdf
+
+*main.pdf
+*tesi-front.pdf
+*tesi-post-front.pdf
+*tavoliere.pdf
+
+## sources
+*.bcf
+*.ptc
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc*
+*.out
+*.fls
+
+## latekmk
+
+*.synctex.gz
+*.fdb_latexmk
+main.run.xml
+
+## graphviz
+
+*.dot
+dot*.tex
+*main*fig*.tex
+
+## gnuplot
+
+*gnuplot*
+
+## misc
+*todo*
+*TODO*
+*test*
