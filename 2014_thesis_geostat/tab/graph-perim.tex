@@ -1,0 +1,22 @@
+\pgfplotstableread[col sep=comma]{tab/raw/perim.csv}{\loadedtable}
+\small
+
+\begin{axis}[
+    width=1\textwidth,
+    height=0.4\textwidth,
+    bar width=5pt,
+    ybar,
+    ymin=0,
+    enlarge x limits,
+    xlabel=\tiny{insediamenti},
+    xlabel shift=-5pt,
+    ylabel=\scriptsize{perimetro $(m)$},
+    xtick={1,...,11},   % indicates xticks going from 1 to 11
+    xticklabels from table={\loadedtable}{set},
+    xticklabel style={rotate=45,font=\tiny},
+    xticklabel shift=-3pt,
+    yticklabel style={font=\tiny},
+]
+    \addplot table[x=id, y=laterza] from \loadedtable;
+    \addplot table[x=id, y=current] from \loadedtable;
+\end{axis}

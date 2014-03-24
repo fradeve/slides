@@ -1,0 +1,24 @@
+\pgfplotstableread[col sep=comma]{tab/raw/orient.csv}{\loadedtable}
+\small
+
+\begin{axis}[
+    width=1\textwidth,
+    height=0.45\textwidth,
+    bar width=5pt,
+    ybar,
+    ymin=0,
+    enlarge x limits,
+    xlabel=\tiny{orientazione dei compounds},
+    xlabel shift=-5pt,
+    ylabel=\scriptsize{frequenza $(n)$},
+    xtick={1,...,8},   % indicates xticks going from 1 to 11
+    xticklabels from table={\loadedtable}{orient},
+    xticklabel style={rotate=45,font=\tiny},
+    xticklabel shift=-3pt,
+    yticklabel style={font=\tiny},
+    legend style={font=\tiny,legend pos=north west,draw=black!40}
+]
+    \addplot table[x=id, y=laterza] from \loadedtable;
+    \addplot table[x=id, y=current] from \loadedtable;
+    \legend{Lat13,current}
+\end{axis}
