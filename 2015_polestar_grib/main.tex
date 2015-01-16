@@ -1,0 +1,157 @@
+\documentclass[xcolor=svgnames]{beamer}
+\usetheme[
+    %%% options passed to the outer theme
+    %    hidetitle,           % hide the (short) title in the sidebar
+    %    hideauthor,          % hide the (short) author in the sidebar
+    %    hideinstitute,       % hide the (short) institute in the bottom of the sidebar
+    %    shownavsym,          % show the navigation symbols
+         width=1.5cm,         % width of the sidebar (default is 2 cm)
+    %    hideothersubsections,% hide all subsections but the subsections in the current section
+    %    hideallsubsections,  % hide all subsections
+         left                 % right of left position of sidebar (default is right)
+    %%% options passed to the color theme
+        lightheaderbg         % use a light header background
+  ]{AAUsidebar}
+
+% #### graphics and schemes
+\usepackage{graphicx}
+\graphicspath{{img/}}
+\usepackage{tikz}
+\usetikzlibrary{                          % TikZ libraries
+                scopes,                   % .
+                shapes,                   % .
+                arrows,                   % .
+                through,                  % .
+                calc,                     % .
+                intersections,            % .
+                spy,                      % .
+                matrix,                   % .
+                chains,                   % .
+                decorations.pathreplacing,% .
+                decorations.pathmorphing, % .
+                decorations.markings}     % .
+
+\usepackage{pgfplots}                     % TikZ plots
+\usepackage{pgfplotstable}                % TikZ tables from CSV
+\pgfplotsset{compat=1.3}                  % activates \xilabel shift` for pgfplots
+\usepackage{array}
+\usepackage{listings}
+\usepackage{ccicons}
+\usepackage{tcolorbox}
+\usepackage{listings}                     % code
+\usepackage{adjustbox}                    % code
+\usepackage{eurosym}                      % euro symbol
+\usepackage{attrib}
+
+% #### colors
+\usepackage{xcolor}                       % common color names
+\usepackage{colortbl}                     % common color names
+
+% #### layouts
+\usepackage{multicol}
+\usepackage[textfont=footnotesize,bf]{caption}
+\usepackage{subfig}
+
+% #### math
+\usepackage{siunitx}
+
+% #### fonts
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{cmbright}
+\usepackage{soul} %slanted text
+\usepackage{hyperref}
+\urlstyle{same}
+\hypersetup{pdfauthor={Francesco de Virgilio},pdftitle={Handling GRIB files: when NOT to use GIS to manage geographic data}}
+
+% #### tables
+\usepackage{booktabs}			          % migliora la qualità delle tabelle
+\usepackage{tabularx}			          % colonne a spaziatura fissa delle tabelle
+\newcommand{\otoprule}                    % better top rule horizontal line
+    {\midrule[\heavyrulewidth]}           % .
+
+
+\begin{document}
+
+\usebackgroundtemplate{%
+    \includegraphics[width=\paperwidth,height=\paperheight]{img/back_first}}
+
+    \begin{frame}[plain,noframenumbering]
+        \begin{center}
+            \color{white}
+            \LARGE{Handling weather GRIB files}\\
+            \normalsize{When \textit{not} to use GIS to manage geographic data}\\
+            \vspace{40pt}
+            Francesco de Virgilio\\
+            \vspace{8pt}
+            \scriptsize{Pole Star Space Applications}\\
+            \scriptsize{London, 27 Jan 2015}
+        \end{center}
+    \end{frame}
+
+\usebackgroundtemplate{%
+    \includegraphics[width=\paperwidth,height=\paperheight]{img/back_normal}}
+
+\section{GIS}
+
+    \begin{frame}{GIS in Pole Star}
+        \begin{center}
+            \color{black}
+            \begin{block}{Geographic Information System}
+                Is a computer system designed to capture, store, manipulate, analyze, manage, and present all types of spatial or geographical data.
+            \end{block}
+        \end{center}
+    \end{frame}
+
+% * gis software in polestar
+
+        \begin{frame}
+        \end{frame}
+
+   \subsection{Why GIS?}
+
+        \begin{frame}
+        \end{frame}
+ 
+    \subsection{Impracticalities}
+
+        \begin{frame}
+        \end{frame}
+
+\section{Weather}
+
+    \subsection{PurpleFinder}
+    % * old approach: PuFi
+
+        \begin{frame}
+        \end{frame}
+
+    \subsection{NumPy}
+    % * new approach: NumPy parsing + API
+
+        \begin{frame}
+        \end{frame}
+
+    \subsection{PostGIS 2}
+    % * future approach: PostGIS raster + API
+
+        \begin{frame}
+        \end{frame}
+
+\section{Space: grid}
+
+    \begin{frame}
+    \end{frame}
+
+\section{Time: slots}
+
+    \begin{frame}
+    \end{frame}
+
+\section{Response structure}
+
+    \begin{frame}
+    \end{frame}
+
+\end{document}
