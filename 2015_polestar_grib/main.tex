@@ -102,41 +102,124 @@
                 Is a computer system designed to capture, store, manipulate, analyze, manage, and present all types of spatial or geographical data.
             \end{block}
         \end{center}
+        \vspace{0.05\textheight}
+        \only<2->{Extensions to well-known software}
+        \begin{columns}[c]
+            \column{.5\textwidth}
+                \begin{itemize}
+                    \item<2-> Django
+                    \item<3-> PostgreSQL
+                \end{itemize}
+            \column{.5\textwidth}
+                \begin{itemize}
+                    \item<2-> geoDjango
+                    \item<3-> PostGIS
+                \end{itemize}
+        \end{columns}
     \end{frame}
 
-% * gis software in polestar
-
-        \begin{frame}
-        \end{frame}
-
    \subsection{Why GIS?}
+
+   % * functions to ease some calculations
+   % * quicker data retrieval and analysis
 
         \begin{frame}
         \end{frame}
  
     \subsection{Impracticalities}
 
+    % * different packages, need to match different versions
+    % * lack of support for some formats
+
         \begin{frame}
         \end{frame}
 
 \section{Weather}
 
+    \subsection{Objective}
+
+        \begin{frame}{Target}
+            \begin{block}{CAS-179: Weather API}
+                Take in the GRIB file, and provide an internal API, that can give weather info for a given time/lat/lon.
+            \end{block}
+            \vfill
+            \pause
+            Example:\\
+            \begin{center}
+                \includegraphics[width=0.35\textwidth]{img/weather_pufi}
+            \end{center}
+        \end{frame}
+
+    \subsection{GRIB data}
+    % * data specification
+
+        \begin{frame}{GRIB file format in a nutshell}
+            \begin{columns}[c]
+                \column{.5\textwidth}
+                \onslide<1->{
+                    \small
+                    \begin{itemize}
+                        \item GRIB: \textbf{G}eneral \textbf{R}egularly-distributed \textbf{I}nformation in \textbf{B}inary form
+                        \item current data provider: Tidetech Pty Ltd
+                        \item updated every day
+                        \item average file dimension: 39 Mb
+                        \item 17 layers
+                        \item timespan: 6 days
+                        \item covered area: whole planet
+                    \end{itemize}
+                }
+                \column{.5\textwidth}
+                \onslide<2->{
+                    \scriptsize
+                    \begin{itemize}
+                        \item \temporal<3>{latitudes array (-90, +90)}{\textbf{latitudes array (-90, +90)}}
+
+                        \item \temporal<3>{longitudes array (-180, +180)}{\textbf{longitudes array (-180, +180)}}
+
+                        \item minutes from first observation
+                        \item string with datetime
+                        \item initial\_time3\_hours (time)
+                        \item PeakWaveDirection
+                        \item SignificantWaveHeight
+                        \item PressureReduced0SL
+                        \item PeakWavePeriod
+                        \item SwellWavesMeanPeriod
+                        \item SwellWavesSignificantHeight
+                        \item SwellWavesDirection
+                        \item WindUComponent
+                        \item WindVComponent
+                        \item WindWavesMeanPeriod
+                        \item WindWavesSignificantHeight
+                    \end{itemize}
+                }
+            \end{columns}
+        \end{frame}
+
+        \begin{frame}{Show me a GRIB! \small{(1 layer)}}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.8\textwidth]{img/nc_screen}
+                \caption{Pressure Reduced at mean sea level, Tidetech data}
+                \label{fig:prmsl}
+            \end{figure}
+        \end{frame}
+
     \subsection{PurpleFinder}
     % * old approach: PuFi
 
-        \begin{frame}
+        \begin{frame}{Old approach: PurpleFinder}
         \end{frame}
 
     \subsection{NumPy}
     % * new approach: NumPy parsing + API
 
-        \begin{frame}
+        \begin{frame}{Current approac: NumPy NetCDF parsing}
         \end{frame}
 
     \subsection{PostGIS 2}
     % * future approach: PostGIS raster + API
 
-        \begin{frame}
+        \begin{frame}{Future approach: PostGIS 2 raster}
         \end{frame}
 
 \section{Space: grid}
@@ -150,6 +233,17 @@
     \end{frame}
 
 \section{Response structure}
+
+    \begin{frame}
+    \end{frame}
+
+\section{Thanks}
+
+    \begin{frame}
+    \end{frame}
+
+\section{Questions?}
+% https://www.flickr.com/photos/nikokahkonen/3884840445
 
     \begin{frame}
     \end{frame}
