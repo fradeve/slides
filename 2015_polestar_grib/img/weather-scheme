@@ -1,0 +1,57 @@
+\input{img/dot-styles}
+
+\begin{scope}[
+        point/.style={coordinate},>=stealth',thick,%draw=black!50,
+        tip/.style={->,shorten >=1pt},
+        every join/.style={rounded corners},
+        hv path/.style={to path={-| (\tikztotarget)}},
+        hv-dash path/.style={to path={-| (\tikztotarget)},dashed},
+        vh path/.style={to path={|- (\tikztotarget)}},
+        vh-dash path/.style={to path={|- (\tikztotarget)},dashed}
+]
+
+    \matrix[
+        column  sep=10mm,
+        row     sep=6mm
+    ] {
+        % row 1 %%%%%%%%%%%%%%%%%%
+        \node[sourcelabel]      (ftp)       {FTP};      % col 1
+        &
+        \node[sourcelabel]      (grib)      {GRIB};     % col 2
+        &
+        \node[sourcelabel]      (netcdf)    {NetCDF};   % col 3
+        &
+                                                        % col 4
+        &
+        \\                                              % col 5
+        % row 2 %%%%%%%%%%%%%%%%%%
+                                                        % col 1
+        &
+                                                        % col 2
+        &
+        \node[derivedlabel]      (django)    {Django DB};% col 3
+        &
+        \node[derivedlabel]      (api)       {API};      % col 4
+        &
+        \node[derivedlabel]      (json)      {json};     % col 5
+      \\};
+
+    {   [start chain]
+        \chainin (ftp);
+        \chainin (grib)     [join=by tip];
+        \chainin (netcdf)   [join=by tip];
+        \chainin (django)   [join=by {dashed,tip}];
+        \chainin (api)      [join=by tip];
+        \chainin (json)     [join=by tip];
+    }
+    {   [start chain]
+        \chainin (django)   [join=by {dashed,tip}];
+        \chainin (netcdf)   [join=by tip];
+    }
+    \node[comment, above=0.005\textheight of ftp] (test) {Tidetech};
+    \node[comment, above=0.005\textheight of grib] (test) {9 Mb};
+    \node[comment, above=0.005\textheight of netcdf] (test) {39 Mb};
+    \node[comment, below=0.005\textheight of django] (test) {db entry};
+    \node[comment, below=0.005\textheight of api] (test) {TastyPie};
+    \node[comment, below=0.005\textheight of json] (test) {response};
+\end{scope}

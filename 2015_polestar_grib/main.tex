@@ -27,6 +27,8 @@
                 spy,                      % .
                 matrix,                   % .
                 chains,                   % .
+                mindmap,                  % .
+                trees,                    % .
                 decorations.pathreplacing,% .
                 decorations.pathmorphing, % .
                 decorations.markings}     % .
@@ -118,15 +120,11 @@
         \end{columns}
     \end{frame}
 
-   \subsection{Why GIS?}
+   \subsection{GIS balancing}
 
-   % * functions to ease some calculations
-   % * quicker data retrieval and analysis
-
-        \begin{frame}
-        \end{frame}
- 
-    \subsection{Impracticalities}
+    % Pros / Cons
+    % * functions to ease some calculations
+    % * quicker data retrieval and analysis
 
     % * different packages, need to match different versions
     % * lack of support for some formats
@@ -138,9 +136,9 @@
 
     \subsection{Objective}
 
-        \begin{frame}{Target}
+        \begin{frame}{Issue}
             \begin{block}{CAS-179: Weather API}
-                Take in the GRIB file, and provide an internal API, that can give weather info for a given time/lat/lon.
+                Take in the \temporal<3>{GRIB file}{\textbf{GRIB file}}, and provide an \temporal<3>{internal API}{\textbf{internal API}}, that can give weather info for a given time/lat/lon.
             \end{block}
             \vfill
             \pause
@@ -150,27 +148,62 @@
             \end{center}
         \end{frame}
 
-    \subsection{GRIB data}
-    % * data specification
+        % makes a node appear in TikZ mindmap, usage: `visible on=<n>`
+        \tikzset{
+            invisible/.style={opacity=0},
+            visible on/.style={alt={#1{<++>}{invisible}}},
+            alt/.code args={<#1>#2#3}{%
+                \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+            },
+        }
 
-        \begin{frame}{GRIB file format in a nutshell}
+        \begin{frame}{Why and API?}
+            \begin{center}
+                \begin{tikzpicture}[scale=1]
+                    \path[mindmap,
+                          concept,
+                          text=white,
+                          level 1/.append style={level distance=3cm},
+                          every node/.append style={scale=0.6}]
+                            node[concept] {Commercial API Service}
+                            [clockwise from=0]
+                            child[concept color=magenta!50]{node[concept]{Comms API}}
+                            child[concept color=orange, visible on=<2->]{node[concept]{Weather API}}
+                            child[concept color=green!50!black]{node[concept]{Event API}}
+                            child[concept color=blue]{node[concept]{Corresp. API}}
+                            child[concept color=red]{node[concept]{SIS API}};
+                            \node[draw,align=left,visible on=<3->,style=rounded corners] at (3,2.5) {
+                                \textit{modularity}, \textit{composition},\\\textit{separation, extensibility}\\
+                                \tiny{\textit{Eric S. Raymonds, ``The Art of UNIX Programming'', 2003}}
+                            }
+                \end{tikzpicture}
+            \end{center}
+        \end{frame}
+
+    \subsection{GRIB data}
+
+        \begin{frame}{Show me a GRIB! \small{(1 layer)}}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.8\textwidth]{img/nc_screen}
+                \caption{Pressure Reduced at mean sea level, Tidetech data}
+                \label{fig:prmsl}
+                \scriptsize
+                \begin{itemize}
+                    \item GRIB: \textbf{G}eneral \textbf{R}egularly-distributed \textbf{I}nformation in \textbf{B}inary form
+                    \item current data provider: Tidetech Pty Ltd, daily updates
+                    \item avg file size: 9 Mb
+                    \item timespan: 6 days
+                \end{itemize}
+            \end{figure}
+        \end{frame}
+
+        \begin{frame}{Something is rotten in the state of Denmark}
             \begin{columns}[c]
-                \column{.5\textwidth}
+                \column{.4\textwidth}
                 \onslide<1->{
-                    \small
-                    \begin{itemize}
-                        \item GRIB: \textbf{G}eneral \textbf{R}egularly-distributed \textbf{I}nformation in \textbf{B}inary form
-                        \item current data provider: Tidetech Pty Ltd
-                        \item updated every day
-                        \item average file dimension: 39 Mb
-                        \item 17 layers
-                        \item timespan: 6 days
-                        \item covered area: whole planet
-                    \end{itemize}
-                }
-                \column{.5\textwidth}
-                \onslide<2->{
-                    \scriptsize
+                    \footnotesize{17 layers:}
+                    \tiny
                     \begin{itemize}
                         \item \temporal<3>{latitudes array (-90, +90)}{\textbf{latitudes array (-90, +90)}}
 
@@ -192,20 +225,26 @@
                         \item WindWavesSignificantHeight
                     \end{itemize}
                 }
+                \column{.6\textwidth}
+                \onslide<2->{
+                    \scriptsize
+                    \begin{itemize}
+                        \item weather GRIB is actually a bundle of arrays
+                        \item each record is independent
+                        \item GRIB is not a database table: no indexes, \temporal<3>{no foreign keys}{\textbf{no foreign keys}}
+
+                        \item as of PostGIS 1.5, there is no way to import GRIB data as raster (and query it)
+                        \item each provider's GRIB structure is different (no common schema)\\\vspace{0.1\textheight}
+                        \onslide<3>{\scriptsize{
+                            No, you can't do this:\\\vspace{0.05\textheight}
+                            \texttt{SELECT pressure\\FROM weather\\WHERE time=now, lat=41.5, lon=10}
+                    }}
+                    \end{itemize}
+                }
             \end{columns}
         \end{frame}
 
-        \begin{frame}{Show me a GRIB! \small{(1 layer)}}
-            \begin{figure}
-                \centering
-                \includegraphics[width=0.8\textwidth]{img/nc_screen}
-                \caption{Pressure Reduced at mean sea level, Tidetech data}
-                \label{fig:prmsl}
-            \end{figure}
-        \end{frame}
-
     \subsection{PurpleFinder}
-    % * old approach: PuFi
 
         \begin{frame}{Old approach: PurpleFinder}
         \end{frame}
@@ -213,13 +252,25 @@
     \subsection{NumPy}
     % * new approach: NumPy parsing + API
 
-        \begin{frame}{Current approac: NumPy NetCDF parsing}
+        \begin{frame}{Current approach: NumPy NetCDF parsing}
+            Long story short: if you can't query it, \textit{parse} it.
+            \begin{center}
+                \resizebox{0.9\textwidth}{!}{%
+                    \begin{tikzpicture}
+                        \input{img/weather-scheme}
+                    \end{tikzpicture}
+                }
+            \end{center}
         \end{frame}
 
     \subsection{PostGIS 2}
     % * future approach: PostGIS raster + API
 
         \begin{frame}{Future approach: PostGIS 2 raster}
+            \tiny{
+                \texttt{gdalwarp -t\_srs EPSG:4326 tidetech\_2014-01-27.grib2 tidetech\_20140127\_epsg-4326.grib2}\\
+                \texttt{raster2pgsql -M -a tidetech\_20140127\_epsg-4326.grib2 tidetech\_20140127.sql}
+        }
         \end{frame}
 
 \section{Space: grid}
