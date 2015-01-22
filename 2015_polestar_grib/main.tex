@@ -151,7 +151,7 @@
         % makes a node appear in TikZ mindmap, usage: `visible on=<n>`
         \tikzset{
             invisible/.style={opacity=0},
-            visible on/.style={alt={#1{<++>}{invisible}}},
+            visible on/.style={alt={#1{}{invisible}}},
             alt/.code args={<#1>#2#3}{%
                 \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
             },
@@ -250,10 +250,16 @@
         \end{frame}
 
     \subsection{NumPy}
-    % * new approach: NumPy parsing + API
 
         \begin{frame}{Current approach: NumPy NetCDF parsing}
-            Long story short: if you can't query it, \textit{parse} it.
+            Long story short: if you can't query it, \textbf{parse} it.
+            \pause
+            \begin{description}
+                \item[NCL]\textit{NCAR Command Language}, maintained by University Corporation for Atmospheric Research
+                \item[NetCDF]\textit{Network Common Data Form}, OGC format for sharing array-oriented data
+            \end{itemize}
+
+            \pause
             \begin{center}
                 \resizebox{0.9\textwidth}{!}{%
                     \begin{tikzpicture}
@@ -263,19 +269,16 @@
             \end{center}
         \end{frame}
 
-    \subsection{PostGIS 2}
-    % * future approach: PostGIS raster + API
-
-        \begin{frame}{Future approach: PostGIS 2 raster}
-            \tiny{
-                \texttt{gdalwarp -t\_srs EPSG:4326 tidetech\_2014-01-27.grib2 tidetech\_20140127\_epsg-4326.grib2}\\
-                \texttt{raster2pgsql -M -a tidetech\_20140127\_epsg-4326.grib2 tidetech\_20140127.sql}
-        }
-        \end{frame}
-
 \section{Space: grid}
 
-    \begin{frame}
+    \begin{frame}{Finding lat/lon in NetCDF}
+        \begin{center}
+            \resizebox{0.9\textwidth}{!}{%
+                \begin{tikzpicture}
+                    \input{img/grid}
+                \end{tikzpicture}
+            }
+        \end{center}
     \end{frame}
 
 \section{Time: slots}
@@ -286,6 +289,15 @@
 \section{Response structure}
 
     \begin{frame}
+    \end{frame}
+
+\section{Future}
+
+    \begin{frame}{Future approach: PostGIS 2 raster}
+        \tiny{
+            \texttt{gdalwarp -t\_srs EPSG:4326 tidetech\_2014-01-27.grib2 tidetech\_20140127\_epsg-4326.grib2}\\
+            \texttt{raster2pgsql -M -a tidetech\_20140127\_epsg-4326.grib2 tidetech\_20140127.sql}
+    }
     \end{frame}
 
 \section{Thanks}

@@ -1,0 +1,14 @@
+\input{img/dot-styles}
+
+\begin{axis}[%
+    scale only axis,
+    xmin=-180, xmax=180,
+    xlabel={lon},
+    xmajorgrids,
+    ymin=0, ymax=90,
+    ylabel={lat},
+    ymajorgrids,
+    axis lines=left,
+    title={ },
+    legend style={nodes=right}]
+\end{axis}
