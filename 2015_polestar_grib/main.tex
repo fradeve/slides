@@ -44,6 +44,7 @@
 \usepackage{verbatim}
 \usepackage{ccicons}
 \usepackage{tcolorbox}
+\usepackage{chronosys}
 \usepackage{listings}                     % code
 \usepackage{adjustbox}                    % code
 \usepackage{eurosym}                      % euro symbol
@@ -179,7 +180,7 @@
                             \node[draw,align=left,visible on=<3->,style=rounded corners] at (3,2.5) {
                                 \textit{modularity}, \textit{composition},\\\textit{separation, extensibility}\\
                                 \tiny{\textit{Eric S. Raymonds, ``The Art of UNIX Programming'', 2003}}
-                            }
+                            };
                 \end{tikzpicture}
             \end{center}
         \end{frame}
@@ -259,10 +260,8 @@
             Long story short: if you can't query it, \textbf{parse} it.
             \pause
             \begin{description}
-                \item[NCL]\textit{NCAR Command Language}, maintained by University Corporation for Atmospheric Research
                 \item[NetCDF]\textit{Network Common Data Form}, OGC format for sharing array-oriented data
-            \end{itemize}
-
+            \end{description}
             \pause
             \begin{center}
                 \resizebox{0.9\textwidth}{!}{%
@@ -276,12 +275,13 @@
             \begin{itemize}
                 \item conversion tool: \texttt{ncl} (NCAR Command Language)
                 \item conversion time: nearly 1 sec
-                \item parsing class: NumPy's \texttt{scipy.io.netcdf}
             \end{itemize}
         \end{frame}
 
         \begin{frame}{Inside the NetCDF}
 
+            \texttt{pip install scipy}\\
+            \texttt{from scipy.io import netcdf}\\
             \texttt{nc = netcdf.netcdf\_file('somefile', 'r')}
             \vfill
             \begin{equation*}
@@ -311,19 +311,67 @@
                         }
                     }
             \end{equation*}
-            \vfill
         \end{frame}
+
+\section{Time: slots}
+
+    \begin{frame}{Time specs}
+        \begin{itemize}
+            \item each time slot has a 6 hours span
+            \item each GRIB files has a temporal span of 6 days
+            \item each GRIB contains $6 \cdot 2 \cdot 6 = 72$ slots
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Daily job: day 1}
+        \begin{itemize}
+            \item a new GRIB is downloaded from FTP; NetCDF is generated and parsed
+            \item all the timeslots are saved in a Django model (\texttt{Timeslot})
+            \item API call: the requested date is fetched from the model
+            \item the \texttt{Timeslot} has foreignkey to the actual NetCDF file
+        \end{itemize}
+        \vspace{0.05\textwidth}
+        \startchronology[startyear=0,stopyear=80]
+        \chronoperiode[dates=false]{6}{72}{}
+        \chronograduation{24}
+        \chronoevent[date=false]{6}{\tiny{6 am}}
+        \chronoevent[date=false]{12}{\tiny{12 am}}
+        \chronoevent[date=false]{18}{\tiny{6 pm}}
+        \chronoevent[date=false]{30}{\tiny{6 am}}
+        \stopchronology
+    \end{frame}
+
+    \begin{frame}{Daily job: day 2}
+        \begin{itemize}
+            \item new grib converted to NetCDF, generated and parsed
+            \item the \texttt{first} timeslot from the new grib is taken
+            \item all timeslots with $\text{date}>=\text{first}$ are deleted
+            \item all new timeslots are saved and will reference the new NetCDF
+        \end{itemize}
+        \vspace{0.05\textwidth}
+        \startchronology[startyear=0,stopyear=80]
+        \chronoperiode[dates=false]{6}{30}{}
+        \chronoperiode[dates=false]{30}{72}{}
+        \chronograduation{24}
+        \chronoevent[date=false]{6}{\tiny{6 am}}
+        \chronoevent[date=false]{12}{\tiny{12 am}}
+        \chronoevent[date=false]{18}{\tiny{6 pm}}
+        \chronoevent[date=false]{30}{\tiny{6 am}}
+        \chronoevent[date=false]{36}{\tiny{12 am}}
+        \chronoevent[date=false]{42}{\tiny{6 pm}}
+        \stopchronology
+    \end{frame}
+
+    % TODO: find the nearest slot
 
 \section{Space: grid}
 
-    \begin{frame}
+    \begin{frame}{Messing with the coordinates}
         \begin{itemize}
             \item spatial grid unit in GRIB files: no standard
             \item Tidetech: grid of cells with side of 1.5 degrees
             \item grid size loaded from Django settings (adjustable)
         \end{itemize}
-        \note{\scriptsize{\lstinputlisting[language=python,linerange={0-1,8-13}]{code/conv_lat}}}
-        \note{\scriptsize{\lstinputlisting[language=python,linerange={0-1,8-9}]{code/conv_lon}}}
         Find the correct array:
         \begin{enumerate}
             \item convert lat/lon to values on a grid with size $x={-180,+180}$, $y={-90,+90}$
@@ -336,9 +384,9 @@
         \end{enumerate}
     \end{frame}
 
-\section{Time: slots}
-
-    \begin{frame}
+    \begin{frame}{Code}
+        \note{\scriptsize{\lstinputlisting[language=python,linerange={0-1,8-13}]{code/conv_lat}}}
+        \note{\scriptsize{\lstinputlisting[language=python,linerange={0-1,8-9}]{code/conv_lon}}}
     \end{frame}
 
 \section{Response structure}
