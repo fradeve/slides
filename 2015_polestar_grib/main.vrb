@@ -1,0 +1,29 @@
+\begin{itemize}
+            \item spatial unit in GRIB files: no standard
+            \item Tidetech: grid of cells with side of 1,5 degrees
+        \end{itemize}
+        \note{\lstinputlisting[language=tex,linerange=7-10]{code/conv_lat}}
+    \end{frame}
+
+\section{Time: slots}
+
+    \begin{frame}
+    \end{frame}
+
+\section{Response structure}
+
+    \begin{frame}
+    \end{frame}
+
+\section{Thanks}
+
+    \begin{frame}
+    \end{frame}
+
+\section{Questions?}
+% https://www.flickr.com/photos/nikokahkonen/3884840445
+
+    \begin{frame}
+    \end{frame}
+
+\end{document}

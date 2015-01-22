@@ -1,0 +1,13 @@
+def convert_latitude(lat):
+    """ Converts latitude from degrees to a value on a grid of custom size
+    (default 180 x 360)
+    :param lat: latitude
+     :type lat: float
+    :return: float
+    """
+    coord_step = getattr(settings, 'COORDINATE_STEP', 1.5)
+    if lat <= 0:
+        lat = -lat
+        return (lat+90)/coord_step
+    elif lat > 0:
+        return lat/coord_step
