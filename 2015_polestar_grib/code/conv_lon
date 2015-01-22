@@ -1,0 +1,9 @@
+def convert_longitude(lon):
+    """ Converts longitude from degrees to a value on a grid of custom size
+    (default 180 x 360)
+    :param lon: longitude
+     :type lon: float
+    :return: float
+    """
+    coord_step = getattr(settings, 'COORDINATE_STEP', 1.5)
+    return (lon+180)/coord_step

@@ -12,6 +12,7 @@
     %%% options passed to the color theme
         lightheaderbg         % use a light header background
   ]{AAUsidebar}
+\setbeameroption{show notes}
 
 % #### graphics and schemes
 \usepackage{graphicx}
@@ -38,6 +39,9 @@
 \pgfplotsset{compat=1.3}                  % activates \xilabel shift` for pgfplots
 \usepackage{array}
 \usepackage{listings}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{verbatim}
 \usepackage{ccicons}
 \usepackage{tcolorbox}
 \usepackage{listings}                     % code
@@ -151,7 +155,7 @@
         % makes a node appear in TikZ mindmap, usage: `visible on=<n>`
         \tikzset{
             invisible/.style={opacity=0},
-            visible on/.style={alt={#1{<++>}{invisible}}},
+            visible on/.style={alt={#1{}{invisible}}},
             alt/.code args={<#1>#2#3}{%
                 \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
             },
@@ -254,6 +258,7 @@
 
         \begin{frame}{Current approach: NumPy NetCDF parsing}
             Long story short: if you can't query it, \textit{parse} it.
+            \vfill
             \begin{center}
                 \resizebox{0.9\textwidth}{!}{%
                     \begin{tikzpicture}
@@ -261,6 +266,47 @@
                     \end{tikzpicture}
                 }
             \end{center}
+            \vfill
+            \pause
+            \begin{itemize}
+                \item conversion tool: \texttt{ncl} (NCAR Command Language)
+                \item conversion time: nearly 1 sec
+                \item parsing class: NumPy's \texttt{scipy.io.netcdf}
+            \end{itemize}
+        \end{frame}
+
+        \begin{frame}{Inside the NetCDF}
+
+            \texttt{nc = netcdf.netcdf\_file('somefile', 'r')}
+            \vfill
+            \begin{equation*}
+                $\text{weather}$ = 
+                    \onslide<2->{
+                        \tikz[baseline]{
+                            \node[fill=blue!20,anchor=base] (t1)
+                            {$\left[\text{layer}\right]$};
+                        } +
+                    }
+                    \onslide<3->{
+                        \tikz[baseline]{
+                            \node[fill=red!20, ellipse,anchor=base] (t2)
+                            {$\left[\text{time slot}\right]$};
+                        } +
+                    }
+                    \onslide<4->{
+                        \tikz[baseline]{
+                            \node[fill=green!20,anchor=base] (t3)
+                            {$\left[\text{lat}\right]$};
+                        } +
+                    }
+                    \onslide<5->{
+                        \tikz[baseline]{
+                            \node[fill=green!20,anchor=base] (t4)
+                            {$\left[\text{lon}\right]$};
+                        }
+                    }
+            \end{equation*}
+            \vfill
         \end{frame}
 
     \subsection{PostGIS 2}
@@ -270,12 +316,29 @@
             \tiny{
                 \texttt{gdalwarp -t\_srs EPSG:4326 tidetech\_2014-01-27.grib2 tidetech\_20140127\_epsg-4326.grib2}\\
                 \texttt{raster2pgsql -M -a tidetech\_20140127\_epsg-4326.grib2 tidetech\_20140127.sql}
-        }
+            }
         \end{frame}
 
 \section{Space: grid}
 
     \begin{frame}
+        \begin{itemize}
+            \item spatial grid unit in GRIB files: no standard
+            \item Tidetech: grid of cells with side of 1.5 degrees
+            \item grid size loaded from Django settings (adjustable)
+        \end{itemize}
+        \note{\scriptsize{\lstinputlisting[language=python,linerange={0-1,8-13}]{code/conv_lat}}}
+        \note{\scriptsize{\lstinputlisting[language=python,linerange={0-1,8-9}]{code/conv_lon}}}
+        Find the correct array:
+        \begin{enumerate}
+            \item convert lat/lon to values on a grid with size $x={-180,+180}$, $y={-90,+90}$
+            \pause
+            \item round point to the nearest point on the grid
+            \pause
+            \item parse the NetCDF to find the array matching that point
+            \pause
+            \item booooring
+        \end{enumerate}
     \end{frame}
 
 \section{Time: slots}
@@ -297,6 +360,9 @@
 % https://www.flickr.com/photos/nikokahkonen/3884840445
 
     \begin{frame}
+        \begin{center}
+            \includegraphics[width=0.8\textwidth]{img/questions}
+        \end{center}
     \end{frame}
 
 \end{document}
