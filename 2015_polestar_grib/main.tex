@@ -47,7 +47,6 @@
 \usepackage{chronosys}
 \usepackage{listings}                     % code
 \usepackage{adjustbox}                    % code
-\usepackage{eurosym}                      % euro symbol
 \usepackage{attrib}
 
 % #### colors
@@ -58,9 +57,6 @@
 \usepackage{multicol}
 \usepackage[textfont=footnotesize,bf]{caption}
 \usepackage{subfig}
-
-% #### math
-\usepackage{siunitx}
 
 % #### fonts
 \usepackage[utf8]{inputenc}
@@ -102,6 +98,26 @@
 
 \section{GIS}
 
+    \begin{frame}{Lower your expectations}
+        \pause
+        This talk will:
+        \begin{itemize}
+            \item help you to understand the WeatherAPI
+            \pause
+            \item mess up your ideas about GRIB files
+        \end{itemize}
+        \pause
+        \vspace{0.05\textwidth}
+        This talk \textbf{will not}:
+        \begin{itemize}
+            \item talk about GIS software (surprise!)
+            \pause
+            \item help you to discover your true self
+            \pause
+            \item save dolphins and kittens
+        \end{itemize}
+    \end{frame}
+
     \begin{frame}{GIS in Pole Star}
         \begin{center}
             \color{black}
@@ -127,14 +143,23 @@
 
    \subsection{GIS balancing}
 
-    % Pros / Cons
-    % * functions to ease some calculations
-    % * quicker data retrieval and analysis
-
-    % * different packages, need to match different versions
-    % * lack of support for some formats
-
-        \begin{frame}
+        \begin{frame}{GIS is about balance}
+            Pros:
+            \begin{itemize}
+                \item functions to ease some calculations
+                \item quicker data retrieval and analysis
+                \item good integration with OO languages (Python/geoDjango)
+            \end{itemize}
+            \pause
+            \vspace{0.05\textwidth}
+            Cons:
+            \begin{itemize}
+                \item avg geospatial package is less well-maintained than other packages (pip, CentOS)
+                \pause
+                \item lack of support for some well-known formats (PostGIS 1.5 and GRIB)
+                \pause
+                \item \textbf{GIS is only effective on properly-structured data}
+            \end{itemize}
         \end{frame}
 
 \section{Weather}
@@ -249,10 +274,10 @@
             \end{columns}
         \end{frame}
 
-    \subsection{PurpleFinder}
-
-        \begin{frame}{Old approach: PurpleFinder}
-        \end{frame}
+    %\subsection{PurpleFinder}
+    %
+    %    \begin{frame}{Old approach: PurpleFinder}
+    %    \end{frame}
 
     \subsection{NumPy}
 
@@ -317,48 +342,54 @@
 
     \begin{frame}{Time specs}
         \begin{itemize}
+            \item first forecast in each GRIB 6 am
+            \pause
             \item each time slot has a 6 hours span
-            \item each GRIB files has a temporal span of 6 days
-            \item each GRIB contains $6 \cdot 2 \cdot 6 = 72$ slots
+            \pause
+            \item each GRIB files has a temporal span of 7 days
+            \pause
+            \item each GRIB contains $(6\text{h} \cdot 4) \cdot 7 = 168$ slots
         \end{itemize}
     \end{frame}
 
     \begin{frame}{Daily job: day 1}
         \begin{itemize}
-            \item a new GRIB is downloaded from FTP; NetCDF is generated and parsed
+            \item a new GRIB is downloaded from FTP; MD5sum compared with latest record
+            \item NetCDF is generated and parsed
             \item all the timeslots are saved in a Django model (\texttt{Timeslot})
             \item API call: the requested date is fetched from the model
             \item the \texttt{Timeslot} has foreignkey to the actual NetCDF file
         \end{itemize}
         \vspace{0.05\textwidth}
-        \startchronology[startyear=0,stopyear=80]
-        \chronoperiode[dates=false]{6}{72}{}
-        \chronograduation{24}
-        \chronoevent[date=false]{6}{\tiny{6 am}}
-        \chronoevent[date=false]{12}{\tiny{12 am}}
-        \chronoevent[date=false]{18}{\tiny{6 pm}}
-        \chronoevent[date=false]{30}{\tiny{6 am}}
+        \startchronology[startyear=0,stopyear=84]
+            \chronoperiode[dates=false,color=red]{6}{84}{}
+            \chronograduation{24}
+            \chronoevent[date=false]{6}{\tiny{6 am}}
+            \chronoevent[date=false]{12}{\tiny{12 am}}
+            \chronoevent[date=false]{18}{\tiny{6 pm}}
+            \chronoevent[date=false]{30}{\tiny{6 am}}
         \stopchronology
     \end{frame}
 
     \begin{frame}{Daily job: day 2}
         \begin{itemize}
-            \item new grib converted to NetCDF, generated and parsed
+            \item a new GRIB is downloaded from FTP; MD5sum compared with latest record
+            \item NetCDF is generated and parsed
             \item the \texttt{first} timeslot from the new grib is taken
             \item all timeslots with $\text{date}>=\text{first}$ are deleted
             \item all new timeslots are saved and will reference the new NetCDF
         \end{itemize}
         \vspace{0.05\textwidth}
-        \startchronology[startyear=0,stopyear=80]
-        \chronoperiode[dates=false]{6}{30}{}
-        \chronoperiode[dates=false]{30}{72}{}
-        \chronograduation{24}
-        \chronoevent[date=false]{6}{\tiny{6 am}}
-        \chronoevent[date=false]{12}{\tiny{12 am}}
-        \chronoevent[date=false]{18}{\tiny{6 pm}}
-        \chronoevent[date=false]{30}{\tiny{6 am}}
-        \chronoevent[date=false]{36}{\tiny{12 am}}
-        \chronoevent[date=false]{42}{\tiny{6 pm}}
+        \startchronology[startyear=0,stopyear=84]
+            \chronoperiode[dates=false]{6}{30}{}
+            \chronoperiode[dates=false]{30}{84}{}
+            \chronograduation{24}
+            \chronoevent[date=false]{6}{\tiny{6 am}}
+            \chronoevent[date=false]{12}{\tiny{12 am}}
+            \chronoevent[date=false]{18}{\tiny{6 pm}}
+            \chronoevent[date=false]{30}{\tiny{6 am}}
+            \chronoevent[date=false]{36}{\tiny{12 am}}
+            \chronoevent[date=false]{42}{\tiny{6 pm}}
         \stopchronology
     \end{frame}
 
@@ -369,16 +400,25 @@
     \begin{frame}{Messing with the coordinates}
         \begin{itemize}
             \item spatial grid unit in GRIB files: no standard
+                \begin{itemize}
+                    \item item grid size loaded from Django settings (adjustable)
+                \end{itemize}
             \item Tidetech: grid of cells with side of 1.5 degrees
-            \item grid size loaded from Django settings (adjustable)
+                \begin{itemize}
+                    \item $\text{longitudes} = 360/1.5 = 240 x$
+                    \item $\text{latitudes} = 180/1.5 = 121 y$
+                \end{itemize}
         \end{itemize}
+        \pause
         Find the correct array:
         \begin{enumerate}
-            \item convert lat/lon to values on a grid with size $x={-180,+180}$, $y={-90,+90}$
+            \item convert lat/lon values ($x={-180,+180}$, $y={-90,+90}$) on a matrix with size ($x={0,240}$, $y={0,121}$)
             \pause
-            \item round point to the nearest point on the grid
+            \item round searched point to the nearest point on the grid
             \pause
             \item parse the NetCDF to find the array matching that point
+            \pause
+            \item iterate on all layers to get complete forecast
             \pause
             \item booooring
         \end{enumerate}
@@ -396,11 +436,15 @@
 
 \section{Future}
 
-    \begin{frame}{Future approach: PostGIS 2 raster}
-        \tiny{
-            \texttt{gdalwarp -t\_srs EPSG:4326 tidetech\_2014-01-27.grib2 tidetech\_20140127\_epsg-4326.grib2}\\
-            \texttt{raster2pgsql -M -a tidetech\_20140127\_epsg-4326.grib2 tidetech\_20140127.sql}
-    }
+    \begin{frame}{Nice to have}
+        \begin{description}
+            \item[PostGIS 2: raster2pgsql GRIB support]~\\
+                    \texttt{gdalwarp -t\_srs EPSG:4326 somefile.grib somefile-epsg-4326.grib}\\
+                    \texttt{raster2pgsql -M -a somefile-epsg-4326.grib somefile.sql}
+
+            \item[forecast caching]~\\cache the forecast for the current day
+            \item[get forecast along track]~\\extract forecast for a future period along a list of positions
+        \end{description}
     \end{frame}
 
 \section{Thanks}
@@ -409,11 +453,18 @@
     \end{frame}
 
 \section{Questions?}
-% https://www.flickr.com/photos/nikokahkonen/3884840445
 
     \begin{frame}
         \begin{center}
-            \includegraphics[width=0.8\textwidth]{img/questions}
+            \Huge{?}
+        \end{center}
+    \end{frame}
+
+\section{Who's next}
+
+    \begin{frame}{Questions}
+        \begin{center}
+            \Huge{In der nächsten Folge:}\\\onslide<2->{Marcel}
         \end{center}
     \end{frame}
 
