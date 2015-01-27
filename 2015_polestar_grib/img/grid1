@@ -1,0 +1,10 @@
+\draw[step=0.5cm,color=gray] (-1,-1) grid (1,1);
+\node at (-1.25,+1) {\small{31}};
+\node at (-1.25,0.5) {\small{30}};
+\node at (-1.25,0) {\small{29}};
+\node at (-1.25,-0.5) {\small{28}};
+
+\node at (-0.5,-1.25) {\small{13}};
+\node at (0,-1.25) {\small{14}};
+\node at (0.5,-1.25) {\small{15}};
+\node at (1,-1.25) {\small{16}};

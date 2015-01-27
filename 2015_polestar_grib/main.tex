@@ -424,14 +424,46 @@
         \end{enumerate}
     \end{frame}
 
-    \begin{frame}{Code}
-        \note{\scriptsize{\lstinputlisting[language=python,linerange={0-1,8-13}]{code/conv_lat}}}
-        \note{\scriptsize{\lstinputlisting[language=python,linerange={0-1,8-9}]{code/conv_lon}}}
+    \begin{frame}{Example}
+        \begin{block}{Homework}
+            Get weather for $\text{lon}=15$, $\text{lat}=30$.
+        \end{block}
+        \vspace{0.05\textheight}
+        Get the index of the cells on a matrix of $x={0,240}$, $y={0,121}$:
+        \begin{center}
+            \texttt{lat\_idx = convert\_latitude(lat) = 20}\\
+            \texttt{lon\_idx = convert\_longitude(lon) = 130}
+        \end{center}
+        Round the indexes to the nearest cell in the matrix:
+        \begin{center}
+            \texttt{round\_to\_grid(lat\_idx, lon\_idx) = 19.5, 130}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Example}
+        Finally, get weather parsing the array with the correct indexes:
+        \vspace{0.05\textheight}
+        \scriptsize{
+            \texttt{from weatherapi.utils import TimeSlot}\\
+            \texttt{slot = get\_nearest\_slot(datetime)}\\
+            \texttt{layer\_data = slot.grib.get\_layer\_content(layers)}\\
+            \texttt{for name in layer\_data.keys():}\\
+            \texttt{~~~~value = layer\_data.get(name)[slot\_n][latitude][longitude]}\\
+        }
+        \vspace{0.05\textheight}
+        In the response, append metadata with the actual location of the forecast:
+        \texttt{get\_coord\_from\_grid(130, 19.5) = 15.75, 29.25}
     \end{frame}
 
 \section{Response structure}
 
-    \begin{frame}
+\begin{frame}{Try it}
+        \begin{center}
+            \large https://weatherapi-test.polestar-internal.com/api/doc\\
+            \vspace{0.05\textheight}
+            d9f7b8249ba56c91d7edadea074454d8884e0190\\
+            admin
+        \end{center}
     \end{frame}
 
 \section{Future}
@@ -449,12 +481,20 @@
 
 \section{Thanks}
 
-    \begin{frame}
+    \begin{frame}{Random gratitude}
+        \vspace{0.05\textheight}
+        For helpful suggestions, pointings, etc.
+        \begin{itemize}
+            \item Phelps
+            \item Corps
+            \item Bretschneider
+            \item Devops
+        \end{itemize}
     \end{frame}
 
 \section{Questions?}
 
-    \begin{frame}
+\begin{frame}{Questions?}
         \begin{center}
             \Huge{?}
         \end{center}
